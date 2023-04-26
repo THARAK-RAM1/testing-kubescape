@@ -1,0 +1,13 @@
+nodeSelector: 
+  node.kubernetes.io/instance-type: Standard_B2s
+resources:
+  limits:
+    cpu: 1800m
+    memory: 3800Mi
+  requests:
+    cpu: 1400m
+    memory: 3Gi
+persistence:
+  storageClass: "azuredisk-storage-class"
+  size: 30Gi
+

@@ -1,0 +1,44 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: azurefile-storage-class
+provisioner: file.csi.azure.com
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+mountOptions:
+  - dir_mode=0700
+  - file_mode=0700
+  - uid=1001
+  - gid=1001
+  - mfsymlinks
+  - cache=strict
+  - nosharesock
+  - actimeo=30
+parameters:
+  skuName: Standard_LRS
+  location: centralindia
+  storageAccount: k8sazurefile
+  
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: system:azure-cloud-provider
+rules:
+- apiGroups: ['']
+  resources: ['secrets']
+  verbs:     ['get','create']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: system:azure-cloud-provider
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: system:azure-cloud-provider
+subjects:
+- kind: ServiceAccount
+  name: persistent-volume-binder
+  namespace: kube-system 

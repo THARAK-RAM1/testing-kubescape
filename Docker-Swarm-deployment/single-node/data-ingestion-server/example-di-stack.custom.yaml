@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  di:
+    ports: 
+      - target: 8080       # data ingestion server http server port  
+        published: 8080  # published port to host
+        mode: host 
+      - target: 9000     # data ingestion server metrics server port
+        published: 9000  # published port to host 
+        mode: host 
